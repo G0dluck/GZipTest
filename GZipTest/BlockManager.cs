@@ -21,13 +21,13 @@ namespace GZipTest
 
         public void SetBlockForWrite(int id, byte[] buffer)
         {
-            if (_pool.IsCompleted)
-                return;
             var block = new DataBlock(id, buffer);
             lock (locker)
             {
                 while (id != blockId)
                 {
+                    if (_pool.IsCompleted)
+                        return;
                     Monitor.Wait(locker);
                 }
 
@@ -52,7 +52,11 @@ namespace GZipTest
 
         public void Complete()
         {
-            _pool.CompleteAdding();
+            lock (locker)
+            {
+                _pool.CompleteAdding();
+                Monitor.PulseAll(locker);
+            }
         }
     }
 }

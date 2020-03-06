@@ -11,7 +11,5 @@ namespace GZipTest
         int Success { get; set; }
 
         void Run();
-        void Read();
-        void Write();
     }
 }

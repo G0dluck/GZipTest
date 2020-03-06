@@ -23,7 +23,7 @@ namespace GZipTest
             Success = 1;
         }
 
-        public void Read()
+        private void Read()
         {
             try
             {
@@ -73,7 +73,7 @@ namespace GZipTest
             }
         }
 
-        public void Write()
+        private void Write()
         {
             try
             {
@@ -119,6 +119,7 @@ namespace GZipTest
             catch (Exception ex)
             {
                 Console.WriteLine("\nОшибка в потоке номер {0}. \nОписание ошибки: {1}", i, ex.Message);
+                _poolWriter.Complete();
                 _isDelete = true;
             }
         }

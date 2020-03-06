@@ -23,7 +23,7 @@ namespace GZipTest
             Success = 1;
         }
 
-        public void Read()
+        private void Read()
         {
             try
             {
@@ -73,7 +73,7 @@ namespace GZipTest
             }
         }
 
-        public void Write()
+        private void Write()
         {
             try
             {
@@ -90,7 +90,7 @@ namespace GZipTest
             {
                 try
                 {
-                    File.Delete(Writer.DestinationFile);
+                    File.Delete(Writer.DestinationFile + ".gz");
                 }
                 catch (Exception ex)
                 {
@@ -115,12 +115,13 @@ namespace GZipTest
 
                         byte[] compressedData = memoryStream.ToArray();
                         _poolWriter.SetBlockForWrite(block.ID, compressedData);
-                    }
+                    }            
                 }
             }
             catch (Exception ex)
             {
                 Console.WriteLine("\nОшибка в потоке номер {0}. \nОписание ошибки: {1}", i, ex.Message);
+                _poolWriter.Complete();
                 _isDelete = true;
             }
 
